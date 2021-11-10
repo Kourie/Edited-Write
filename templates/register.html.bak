@@ -1,0 +1,21 @@
+{% extends "trueHome.html" %}
+
+{% block title %}
+uwu noises please DIE
+{% endblock %}
+
+{% block body %}
+
+<form action="/register" method="post" required>
+    <h1>Welcome!</h1>
+	<div class="nav">  
+        <h2><a href="login">login</a> <a class="active" href="register">register</a></h2>
+      </nav>
+    <h2>Register</h2>
+    <input placeholder="username" type="text" name="username" required>
+    <input placeholder="email" type="text" name="Email" required>
+    <input placeholder="password" type="text" name="password" required>
+    <input type="submit" value="register">
+</form>
+
+{% endblock %}

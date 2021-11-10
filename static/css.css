@@ -4,16 +4,36 @@ html{
 	font-family: Garamond, Arial, sans-serif, Comic Sans MS, Comic Sans, cursive;
 }
 
-.container-1 div, .container-2 div, .container-3 div{
+p{
+color: white;
+text-align: center;
+}
+/* the container is in the layout at the top, it kinda controls everything */
+.container-1 div{ 
   border:1px #ccc solid;
   padding:10px;
+  max-width: 460;
+  max-height: 460px;
+}
+/* this is the pictures. or the box containing them at least. */
+.flex-item {
+  display: flex;
+  padding: 10px;
+  align-items: stretch;
+  flex-wrap: wrap;
+  align-content: stretch;
+  gap: 10px 30px;
+  margin: 10px;
+  align-self: baseline;
+}
+/* this adds the borders around the image */
+.box {
+  border:1px #ccc solid;
+  padding: 10px;
+  
   background-color: rgb(9, 43, 88);
 }
-
-.box{
-  flex:2;
-  order:2;
-}
+/* does that mean, all your images are excatly the same size? mine are all diffrent, is that where it goes wrong? */
 
 form{
   border: 1px solid black;
@@ -74,7 +94,7 @@ h1{
 
 #wrapper{
 	margin:0 auto;
-	max-width:75%;
+	max-width:95%;
 }
 
 h1 {
@@ -152,7 +172,10 @@ tr:nth-child(even) {
 
 
   img {
-    max-width:1000px;
-    max-height:1000px;
+    max-width:350px;
+    max-height:350px;
   }
 
+
+
+  /* Hey, Sina, remember how your flexboxes have a set size? could you help me with that? mine a re a bit Janky in size */

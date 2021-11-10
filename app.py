@@ -20,14 +20,16 @@ def close_connection(exception):
         db.close()
 
 @app.route('/')
-def home():
-    if 'username' in session:
+def home(): #using sessions to store the username, to call back and see if it works
+    if 'username' in session: 
         results = f'Logged in as {session["username"]}'
         log = ('enter the medium')
         return render_template("home.html", result=results, log=log)
     return render_template("basic.html")
 
-@app.route('/account')
+
+#this is the upload page you can think of it
+@app.route('/account') 
 def account():
     if 'username' in session:
         results = f'Logged in as {session["username"]}'
@@ -36,15 +38,17 @@ def account():
     return render_template("basic.html")
 
 
-
+#this is a layout for the inside of the website. after the login page as those use diffrent styles and layouts
 @app.route('/trueHome')
 def truehome():
     return render_template("trueHome.html")
 
-@app.route('/login')
+#login page
+@app.route('/login') 
 def login():
     return render_template("login.html")
 
+#register  q
 @app.route('/register', methods=["GET","Post"])
 def register_function():
     if request.method == "POST":
@@ -59,30 +63,17 @@ def register_function():
         print (password + " pass")
         try:
             cursor.execute(sql,(user_ID,Email,password))
-            get_db().commit()  
+            get_db().commit()
+            flash ("User registered, please log in")
+            return redirect ("/login")
+            
         except:
             flash ("failed to register, username already exists")
         return redirect ("/register")
 
     return render_template("register.html")
 
-###
-#@app.route('/logged')
-#def logged():
-#    home()
-#    cursor = get_db().cursor()
-#    sql = ("SELECT * FROM Account WHERE user_id = (?)")
-#    cursor.execute(sql,(session['username'],))
-#    result=cursor.fetchall()
-#    print (result)
-    
-#    if 'username' in session:
-#        results = f'Logged in as {session["username"]}'
-#        return render_template("home.html", result=results)
-#    log = ("Not logged in")
 
-
-#    return render_template("logged.html", results=result, log=log)
 
 @app.route('/fail')
 def fail():
@@ -94,13 +85,20 @@ def fail():
 @app.route('/out')
 def out():
     if 'username' in session:
+        cursor = get_db().cursor()
        #querey of data to import/send to the box thing
-        return render_template("out.html")
+        sql = ("SELECT * FROM Image ORDER BY Image_ID DESC") 
+        
+        cursor.execute(sql)
+        
+        results = cursor.fetchall() 
+        print (results)
+        return render_template("out.html", results=results)
     else:
         results = ("Not logged in")
 
-        print ("aaaaaaaa")
-        return render_template("fail.html", result=results,)
+        print ("failed, not logged in")
+        return render_template("fail.html", results=results)
     
 
 
@@ -136,18 +134,23 @@ def login_function():
 def upload():
     request.files['file'].save(f'static/uploads/{request.files["file"].filename}')
     if request.method == "POST":
-        global user
-        cursor = get_db().cursor()
-        filename = request.files["file"]
-        print(filename)
-        User_ID = user
-        print (User_ID)
-        sql = ("INSERT INTO Image(filename, User_ID) VALUES (?,?)")
-        cursor.execute(sql,(filename,User_ID))
-        results = cursor.fetchall()
-        print (results)
-        get_db().commit()
-    return redirect("/out")
+        try:
+            
+            cursor = get_db().cursor()
+            filename = request.files["file"]
+            print(filename.filename)    
+            User_ID = session["username"]
+            print (User_ID)
+            sql = ("INSERT INTO Image(filename, User_ID) VALUES (?,?)")
+            cursor.execute(sql,(filename.filename,User_ID))
+            get_db().commit()
+            results = cursor.fetchall() 
+            return redirect("/out")
+        except:
+            flash ("something went wrong. try again with a diffrent image format, png is preferable")
+            return render_template("fail.html", results=results)
+        return redirect("/out")
+
 
 
 

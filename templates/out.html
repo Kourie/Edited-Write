@@ -6,11 +6,13 @@ logged
 
 {% block body %}
 
-<h2> actually worked</h2>
-<div class="container-1">
+<h2>Welcome to the network, here are the latest posts</h2>
+<div class="flex-item">
+{% for item in results %}
+  <!-- item -->
     <div class="box">
-      <h3>Box test</h3>
-      <p>phat image here</p>
-      <br></br>
+      <img src="/static/uploads/{{item[1]}}"></img>
+      <p>uploaded by: {{item[2]}}</p>
     </div>
+    {% endfor %}
 {% endblock %}
